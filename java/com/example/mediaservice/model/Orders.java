@@ -14,10 +14,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orders {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@SequenceGenerator(name = "default_generator", sequenceName = "orders_seq", allocationSize = 1)
+public class Orders extends GenericModel{
 
     @Column (name = "rent_date", nullable = false)
     private LocalDateTime rentDate;

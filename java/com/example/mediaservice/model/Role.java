@@ -10,6 +10,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@Builder(toBuilder = true)
 public class Role {
 
     @Id
@@ -22,4 +24,6 @@ public class Role {
 
     @Column(name = "description")
     private String description;
+
+
 }
