@@ -1,5 +1,6 @@
 package com.example.mediaservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,7 +31,8 @@ public class Films extends GenericModel{
     @Enumerated // необходимо поставить когда тип данных инам, чтобы все правильно создавалось
     Genre genre;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany( fetch = FetchType.EAGER)
+//    @JsonIgnore
     @JoinTable(
             name = "film_directors",
             joinColumns = @JoinColumn(name = "films_id"),

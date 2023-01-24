@@ -26,10 +26,10 @@ public class Orders extends GenericModel{
     @Column(name = "purchase")
     private boolean purchase;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "FK_ORDER_USER"))
     private Users users;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "films_id", foreignKey = @ForeignKey(name = "FK_ORDER_FILM"))
     private Films films;
 

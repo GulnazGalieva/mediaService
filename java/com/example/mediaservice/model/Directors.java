@@ -1,5 +1,6 @@
 package com.example.mediaservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,7 +25,10 @@ public class Directors extends GenericModel {
     @Column(name = "position")
     String position;
 
-    @ManyToMany(mappedBy = "directors",fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "directors",fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+
+    @JsonIgnore
+
     private Set<Films> films = new HashSet<>();
     @Builder
     public Directors(Long id, String createdBy, LocalDateTime createdWhen, String updatedBy, LocalDateTime updatedWhen,
