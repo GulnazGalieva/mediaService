@@ -1,0 +1,46 @@
+<!--Добавление фильма-->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавить фильм</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <!--        Форма добавления книги-->
+  <!--        action="" - url на который будут отправлены данные-->
+  <!--        object="" - имя объекта в котором будут хранится данные (нужно чтобы потом в контроллере их распарсить)-->
+  <form method="POST" enctype="multipart/form-data" th:action="@{/films/add}" th:object="${filmsForm}">
+    <div class="mb-3">
+      <label for="title" class="form-label">Название</label>
+      <input name="title" type="text" class="form-control" id="title">
+    </div>
+    <!--    <div class="mb-3">-->
+    <!--      <label for="onlineCopy" class="form-label">Онлайн копия</label>-->
+    <!--      <input type="file" name="file" id="onlineCopy"/>-->
+    <!--    </div>-->
+    <div class="mb-3">
+      <label for="country" class="form-label">Страна</label>
+      <input name="country" type="text" class="form-control" id="country">
+    </div>
+
+    <div class="mb-3">
+      <label for="publishYear" class="form-label">Год издания</label>
+      <input name="publishYear" type="text" class="form-control" id="publishYear">
+    </div>
+    <div class="mb-3">
+      <label for="genre" class="form-label">Жанр</label>
+      <select class="form-select" name="genre" id="genre" aria-label="Default select example">
+        <option selected>Выберете жанр из списка:</option>
+        <option th:each="genre : ${T(com.example.mediaservice.model.Genre).values()}"
+                th:value="${genre}" th:text="${genre.getGenreText()}"></option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
+    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+  </form>
+</div>
+</body>
+</html>

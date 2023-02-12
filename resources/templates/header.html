@@ -1,0 +1,34 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+     th:fragment="header">
+  <nav class="navbar navbar-expand-lg" style="background-color: #b84f3c">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/test"style="color: whitesmoke">Кинотека</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul sec:authorize="isAuthenticated()" class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-link active">
+            <a class="nav-link active" aria-current="page" href="/films">Фильмы</a>
+          </li>
+          <li class="nav-link active">
+            <a class="nav-link active" aria-current="page" href="/directors">Участники</a>
+          </li>
+          <li class="nav-link active">
+            <a style="float: right" class="nav-link active" aria-current="page" href="/profile">Профиль</a>
+          </li>
+        </ul>
+
+        </div>
+
+        <form sec:authorize="isAuthenticated()" class="d-flex">
+          <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Выйти</a>
+        </form>
+
+      </div>
+    </div>
+  </nav>
+</div>

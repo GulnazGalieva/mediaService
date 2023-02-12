@@ -9,8 +9,7 @@ import java.util.Set;
 
 @Repository
 public interface UsersRepository extends GenericRepository<Users> {
-
-
+    Users findUsersByLogin(String Login);
 
 
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавить фильм к участнику</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1 th:text="'Добавить фильм к участнику: ' +${directors}"></h1>
+
+  <form method="POST" th:action="@{/directors/add-films}" th:object="${directorsFilmsForm}">
+    <input type="hidden" name="directorsId" th:value="${directorsId}">
+    <div class="mb-3">
+      <label for="films" class="form-label">Название книги</label>
+      <select class="form-control" name="filmsId" id="films">
+        <option selected disabled value="0">Выберите фильм</option>
+        <option th:each="films:${films}"
+                th:value="${films.id}"
+                th:text="${films.title}">
+        </option>
+      </select>
+      <input name="directorsFIO" type="text" class="form-control" id="directorsFIO">
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Добавить</button>
+  </form>
+</div>
+</body>
+</html>

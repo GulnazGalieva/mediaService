@@ -18,6 +18,7 @@ public class RoleService {
         return repository.findAll();
     }
 
-
-
+    public Role getOne(Long id){
+        return repository.findById(id).orElseThrow();
+    }
 }

@@ -3,6 +3,7 @@ package com.example.mediaservice.service;
 import com.example.mediaservice.model.GenericModel;
 import com.example.mediaservice.repository.GenericRepository;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public abstract class GenericService<T extends GenericModel>{
         return repository.findAll();
     }
     public T getOne(Long id){
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow(()-> new NotFoundException("Row with such ID: " + id + " not found"));
     }
     public T create (T object){
         return repository.save(object);

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface OrdersRepository extends GenericRepository<Orders>{
     List<Orders> findOrdersByUsers(Users users);
-    List<Orders> findOrdersByFilms(Films films);
+    List<Orders> findOrdersByFilmsId(Long filmsId);
 
 
 

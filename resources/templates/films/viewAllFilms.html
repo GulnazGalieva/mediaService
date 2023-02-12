@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Фильмы</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1>Фильмы кинотеки</h1>
+  <div class="row">
+    <div class="col">
+      <a
+              href="films/add"
+              class="btn btn-secondary"
+              role="button"
+              style="float: right"
+              sec:authorize="isAuthenticated() && (hasRole('ADMIN')||hasRole('MEDIASERVICEMANAGER'))"
+              aria-disabled="true">Добавить фильм</a>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col">
+      <form method="POST" action="/films/search" th:object="${searchFilms}">
+        <div class="row">
+          <div class="col-auto">
+            <label for="title" class="col-form-label">Название фильма</label>
+          </div>
+          <div class="col-9">
+            <input type="text" id="title" class="form-control" name="title">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Поиск</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Название</th>
+      <th>Жанр</th>
+      <th>Год выпуска</th>
+      <th>Страна</th>
+      <th>Режисеры и Актеры</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="films : ${films}">
+      <td th:text="${films.title}"></td>
+      <td th:text="${films.genre.getGenreText()}"></td>
+      <td th:text="${films.premierYear}"></td>
+      <td th:text="${films.country}"></td>
+<!--      <td th:text="${films.directorsIds}"></td>-->
+      <td>
+        <ul>
+          <li th:each="directors: ${films.directors}" th:text="${directors.directorsFIO}"></li>
+        </ul>
+      </td>
+      <div class="col-auto">
+      <td>
+        <div sec:authorize="isAuthenticated() && (hasRole('ADMIN')||hasRole('MEDIASERVICEMANAGER'))">
+        <a style="float: right" class = "btn btn-danger ms-1" th:href = "'films/delete/'+${films.id}">Удалить</a>
+        <a style="float: right" class = "btn btn-warning ms-1" th:href = "'films/update/'+${films.id}">Обновить</a>
+        <a style="float: right" class = "btn btn-danger ms-1" th:href = "'/films/add-directors/'+${films.id}">Добавить участника</a>
+        </div>
+        <a style="float: right" class = "btn btn-warning" th:href = "'films/'+${films.id}">Просмотреть</a>
+      </td>
+      </div>
+    </tr>
+    </tbody>
+  </table>
+
+  <nav aria-label="Pagination" th:if="${films.totalPages gt 0}">
+    <ul class="pagination justify-content-center font-weight-bold">
+      <li class="page-item" th:classappend="${films.number eq 0} ? 'disabled'">
+        <a class="page-link"
+           th:href="@{/films?page={id}(id=${films.number lt 2 ? 1 : films.number})}"
+           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item"
+          th:each="i : ${#numbers.sequence(1, films.totalPages, 1)}"
+          th:classappend="${i eq films.number + 1} ? 'active'">
+        <a class="page-link" th:href="@{/films?page={id}(id=${i})}" th:text="${i}"
+           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+      </li>
+      <li class="page-item" th:classappend="${films.number eq films.totalPages - 1} ? 'disabled'">
+        <a class="page-link"
+           th:href="@{/films?page={id}(id=${films.number + 2})}"
+           aria-label="Next" title="Next Page" data-toggle="tooltip">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+
+</div>
+</body>
+</html>

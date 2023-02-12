@@ -3,6 +3,8 @@ package com.example.mediaservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,7 +23,7 @@ public class Users extends GenericModel{
     @Column(name = "password")
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "role_id",
             foreignKey = @ForeignKey(name = "FK_USER_ROLES")
@@ -35,15 +37,15 @@ public class Users extends GenericModel{
     @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "birth_date")
-    private String birthDate;
-
     @Column(name = "email")
     private String email;
     @Column(name = "phone")
     private String phone;
     @Column(name = "address")
     private String address;
+
+    @Column(name ="date_birth")
+    private String birthDate;
 
     @Builder
     public Users(Long id, String createdBy, LocalDateTime createdWhen, String updatedBy, LocalDateTime updatedWhen,
@@ -58,9 +60,9 @@ public class Users extends GenericModel{
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
-        this.birthDate = birthDate;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.birthDate = birthDate;
     }
 }

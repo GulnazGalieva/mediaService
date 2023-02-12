@@ -18,16 +18,20 @@ import java.util.Set;
 public class Directors extends GenericModel {
 
     @Column(name = "directors_fio")
-    String directorsFIO;
-
-
+   private String directorsFIO;
 
     @Column(name = "position")
-    String position;
+    private String position;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 
-    @ManyToMany(mappedBy = "directors",fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-
-    @JsonIgnore
+//    @JsonIgnore
+    @JoinTable(
+            name = "film_directors",
+            joinColumns = @JoinColumn(name = "directors_id"),
+            foreignKey = @ForeignKey(name = "FK_DIRECTORS_FILMS"),
+            inverseJoinColumns = @JoinColumn (name = "films_id"),
+            inverseForeignKey = @ForeignKey(name = "FK_FILMS_DIRECTORS")
+    )
 
     private Set<Films> films = new HashSet<>();
     @Builder

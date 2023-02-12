@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Участники</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Участники кинотеки</h1>
+    <div class="row">
+        <div class="col">
+            <a
+                    href="directors/add"
+                    class="btn btn-secondary"
+                    role="button"
+                    style="float: right"
+                    sec:authorize="isAuthenticated() && (hasRole('ADMIN')||hasRole('MEDIASERVICEMANAGER'))"
+                    aria-disabled="true">Добавить участника</a>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <form method="POST" action="/directors/search" th:object="${searchDirectors}">
+                <div class="row">
+                    <div class="col-auto">
+                        <label for="directorsFIO" class="col-form-label">ФИО участника</label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" id="directorsFIO" class="form-control" name="directorsFIO">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Позиция</th>
+            <th>Фильмы</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="directors : ${directors}">
+            <td th:text="${directors.directorsFIO}"></td>
+            <td th:text="${directors.position}"></td>
+            <td>
+                <ul>
+                    <li th:each="films: ${directors.films}" th:text="${films.title}"></li>
+                </ul>
+            </td>
+            <td>
+                <div  sec:authorize="isAuthenticated() && (hasRole('ADMIN')||hasRole('MEDIASERVICEMANAGER'))">
+                <a style="float: right" class = "btn btn-danger ms-1" th:href = "'directors/delete/'+${directors.id}">Удалить</a>
+                <a style="float: right" class = "btn btn-warning ms-1" th:href = "'directors/update/'+${directors.id}">Обновить</a>
+                <a style="float: right" class = "btn btn-success ms-1"th:href = "'directors/add-films/'+${directors.id}">Добавить фильм</a>
+                </div>
+                <a style="float: right" class = "btn btn-success"th:href = "'directors/'+${directors.id}">Просмотреть</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Pagination" th:if="${directors.totalPages gt 0}">
+        <ul class="pagination justify-content-center font-weight-bold">
+            <li class="page-item" th:classappend="${directors.number eq 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/directors?page={id}(id=${directors.number lt 2 ? 1 : directors.number})}"
+                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(1, directors.totalPages, 1)}"
+                th:classappend="${i eq directors.number + 1} ? 'active'">
+                <a class="page-link" th:href="@{/directors?page={id} (id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+            </li>
+            <li class="page-item" th:classappend="${directors.number eq directors.totalPages - 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/directors?page={id}(id=${directors.number + 2})}"
+                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+</div>
+</body>
+</html>
